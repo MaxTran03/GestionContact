@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="domain">
+
+<class name="PhoneNumber" table="TAB_PHONE_NUMBERS" >
+
+	<id name="phoneNumberId" type="long" column="ID_PHONE" >
+	   	<generator class="increment"/>
+	</id>
+	
+	<property name="phoneKind" column="PHONEKIND" type="string" update="false"/>
+	<property name="phoneNumber" column="PHONENUMBER" type="string" update="false"/>
+	
+	<!-- Plusieurs numero peuvent être associé à un contact -->
+	<many-to-one name="contact" column="ID_CONTACT" class="Contact"/>
+
+</class>
+
+</hibernate-mapping>

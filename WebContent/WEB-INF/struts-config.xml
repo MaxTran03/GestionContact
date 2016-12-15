@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+
+	<!-- =========================== message file =========================== -->
+
+	<form-beans>
+		<form-bean name="loginForm" type="org.lip6.struts.actionForm.LoginForm" />
+		<form-bean name="AddContactValidationForm" type="org.lip6.struts.actionForm.AddContactValidationForm" />
+		<form-bean name="FindContactValidationForm" type="org.lip6.struts.actionForm.FindContactValidationForm" />
+		<form-bean name="DeleteContactValidationForm" type="org.lip6.struts.actionForm.DeleteContactValidationForm" />
+		<form-bean name="UpdateContactValidationForm" type="org.lip6.struts.actionForm.UpdateContactValidationForm" />
+		<form-bean name="LoadContactToUpdateValidationForm" type="org.lip6.struts.actionForm.LoadContactToUpdateValidationForm" />
+	</form-beans>
+
+	<action-mappings>
+		<action path="/login" type="org.lip6.struts.servletAction.LoginAction"
+			name="loginForm" input="/index.jsp" scope="request">
+			<forward name="Success" path="/Main.jsp" redirect="true" />
+			<forward name="Fail" path="/index.jsp" redirect="true" />
+		</action>
+	
+		<action path="/CreationForward" forward="/addContact.jsp"></action>
+		<action path="/SupressionForward" type="org.apache.struts.actions.ForwardAction" parameter="/removeContact.jsp"></action>
+		<action path="/UpdateForward" type="org.apache.struts.actions.ForwardAction" parameter="/updateContact.jsp"></action>
+		<action path="/SearchForward" type="org.apache.struts.actions.ForwardAction" parameter="/searchContact.jsp"></action>
+		<action path="/MenuForward" type="org.apache.struts.actions.ForwardAction" parameter="/Main.jsp"></action>
+		<action path="/AdvancedSearchForward" type="org.apache.struts.actions.ForwardAction" parameter="/searchModels.jsp"></action>
+		
+		<action path="/newContact" type="org.lip6.struts.servletAction.NewContactAction"
+			name="AddContactValidationForm" scope="request" input="/addContact.jsp">
+			<forward name="success" path="/Main.jsp" />
+			<forward name="error" path="/addContact.jsp" />
+		</action>
+		
+		<action path="/findContact" type="org.lip6.struts.servletAction.FindContactAction"
+			name="FindContactValidationForm" scope="request" input="searchContact.jsp">
+			<forward name="success" path="/searchContact.jsp" />
+			<forward name="error" path="/error.jsp" />
+		</action>
+		
+		<action path="/findContactRemove" type="org.lip6.struts.servletAction.FindContactAction"
+			name="FindContactValidationForm" scope="request" input="removeContact.jsp">
+			<forward name="success" path="/removeContact.jsp" />
+			<forward name="error" path="/error.jsp" />
+		</action>
+		
+		<action path="/deleteContact" type="org.lip6.struts.servletAction.DeleteContactAction"
+			name="DeleteContactValidationForm" scope="request" input="removeContact.jsp">
+			<forward name="success" path="/removeContact.jsp" />
+			<forward name="error" path="/removeContact.jsp" />
+		</action>
+		
+		<action path="/findContactUpdate" type="org.lip6.struts.servletAction.FindContactAction"
+			name="FindContactValidationForm" scope="request" input="updateContact.jsp">
+			<forward name="success" path="/updateContact.jsp" />
+			<forward name="error" path="/error.jsp" />
+		</action>
+		
+		<action path="/loadContact" type="org.lip6.struts.servletAction.LoadContactToUpdateAction"
+			name="LoadContactToUpdateValidationForm" scope="request" input="updateContact.jsp">
+			<forward name="success" path="/updateContact.jsp" />
+			<forward name="error" path="/error.jsp" />	
+		</action>
+		
+		<action path="/refreshContact" type="org.lip6.struts.servletAction.UpdateContactAction"
+			name="UpdateContactValidationForm" scope="request" input="updateContact.jsp">
+			<forward name="success" path="/updateContact.jsp" />
+			<forward name="error" path="/error.jsp" />	
+		</action>
+		
+	</action-mappings>
+
+	<message-resources parameter="Resources" />
+</struts-config>

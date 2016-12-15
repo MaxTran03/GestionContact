@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+      http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+      http://www.springframework.org/schema/context 
+      http://www.springframework.org/schema/context/spring-context-4.1.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+
+	<bean id="basicDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	<!--<bean id="basicDataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close" autowire="no">-->
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/BDAINAS" />
+		<property name="username" value="root" />
+		<property name="password" value="" />
+		<property name="initialSize" value="3" />
+		<property name="maxActive" value="10" />
+	</bean>
+
+
+	<bean id="mySessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="basicDataSource" />
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory" ref="mySessionFactory" />
+		<property name="checkWriteOperations" value="false" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="mySessionFactory" />
+	</bean>
+
+	<bean id="Address" class="domain.Address" scope="prototype"></bean>
+	<bean id="Contact" class="domain.Contact" scope="prototype"></bean>
+	<bean id="ContactGroup" class="domain.ContactGroup" scope="prototype"></bean>
+	<bean id="Enterprise" class="domain.Enterprise" scope="prototype"></bean>
+	<bean id="PhoneNumber" class="domain.PhoneNumber" scope="prototype"></bean>
+
+	<bean id="DAOAddress" class="domain.DAOAddress">
+		<property name="sessionFactory" ref="mySessionFactory"></property>
+	</bean>
+	<bean id="DAOContact" class="domain.DAOContact">
+		<property name="sessionFactory" ref="mySessionFactory"></property>
+	</bean>
+	<bean id="DAOContactGroup" class="domain.DAOContactGroup">
+		<property name="sessionFactory" ref="mySessionFactory"></property>
+	</bean>
+	<bean id="DAOEnterprise" parent="DAOContact" class="domain.DAOEnterprise">
+		<property name="sessionFactory" ref="mySessionFactory"></property>
+	</bean>
+	<bean id="DAOPhoneNumber" class="domain.DAOPhoneNumber">
+		<property name="sessionFactory" ref="mySessionFactory"></property>
+	</bean>
+
+</beans>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<ehcache>
+	<diskStore path="java.io.tmpdir"/>
+	<defaultCache maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="false" />
+
+	<cache name="domain.Contact" maxElementsInMemory="100" eternal="true" timeToIdleSeconds="500" timeToLiveSeconds="1000" overflowToDisk="false"/>
+	
+</ehcache>

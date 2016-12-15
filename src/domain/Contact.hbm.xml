@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="domain">
+
+<class name="Contact" table="TAB_CONTACT" discriminator-value="C" optimistic-lock="version">
+	<!-- <cache usage="read-write"/> -->
+
+	<id name="id" type="long" column="ID_CONTACT" >
+	   	<generator class="increment"/>
+	</id>
+	
+	<!-- La balise discriminator doit être absolument placer après la balise id sinon ERREUR -->
+	<!-- Héritage -->
+	<discriminator column="SUBCLASS" type="character"/>
+	<version name="version" type="integer" access="field" column="version"/>
+	
+	<property name="firstname" column="FIRSTNAME" type="string" update="true"/>
+	<property name="lastname" column="LASTNAME" type="string" update="true"/>
+	<property name="email" column="EMAIL" type="string" update="true"/>
+
+	<!-- Un contact possède une adresse -->
+	<many-to-one name="add" column="ID_ADDRESS" unique="true" not-null="false" cascade="all" optimistic-lock="false"/>
+	
+	<!-- Un contact peut avoir plusieurs numeros -->
+	<!--<set name="phones" table="PHONE_NUMBER" inverse="true">
+		<key column="ID_CONTACT" />
+		<many-to-many class="PhoneNumber" column="ID_PHONE"/>
+	</set>-->
+	
+	<set name="phones" inverse="true" cascade="all">
+		<key column="ID_CONTACT" />
+		<one-to-many class="PhoneNumber"/>
+	</set>
+	
+	<!-- Un contact peut appartenir à plusieurs groupes -->
+	<set name="books" table="CONTACT_GROUP" inverse="true" >
+		<key column="ID_CONTACT" />
+		<many-to-many class="ContactGroup" column="ID_CONTACTGR" />
+	</set>
+		
+	<subclass name="Enterprise" discriminator-value="E">
+		<property name="numSiret" column="NUM_SIRET" type="long"/>
+	</subclass>
+
+</class>
+
+</hibernate-mapping>
